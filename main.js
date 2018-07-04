@@ -40,20 +40,6 @@ function main() {
 	cs1.add(t6);
 	cs1.add(t7);
 	cs1.add(t8);
-	scene.insert(cs1);
-												   
-	const cs2 = new CoordSystem("cs2", mat4.fromValues(2, 0, 0, 0,
-													   0, 1, 0, 0,
-													   0, 0, 1, 0,
-													   0.5, 1, 0.5, 1));
-	cs2.add(t1);	
-	cs2.add(t2);
-	cs2.add(t3);
-	cs2.add(t4);
-	cs2.add(t5);
-	cs2.add(t6);
-	cs2.add(t7);
-	cs2.add(t8);	
-	scene.insert(cs2);												   
+	scene.insert(cs1);										   
 	scene.render();
 }

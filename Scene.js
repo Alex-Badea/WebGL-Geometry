@@ -38,7 +38,7 @@ class Scene {
 				this.eyePos = vec3.transformMat4(vec3.create(), this.eyePos, rotUpMat);
 				frontDir = vec3.normalize(vec3.create(), vec3.negate(vec3.create(), this.eyePos));
 				leftDir = vec3.normalize(vec3.create(), vec3.cross(vec3.create(), this.upDir, frontDir));
-				// Should degenerated upDir be regenerated?
+				// Se va regenera upDir degenerat?
 				//upDir = vec3.normalize(vec3.create(), vec3.cross(vec3.create(), frontDir, leftDir));
 			}
 			lastMousePos = vec2.fromValues(e.clientX, e.clientY);
@@ -49,10 +49,9 @@ class Scene {
 		};
 	}
 	
-	insert(coordSystem) {
-		coordSystem.init(this.gl);
-		coordSystem._INIT_NAME();
-		this.drawList.push(coordSystem);
+	insert(drawable) {
+		drawable.init(this.gl);
+		this.drawList.push(drawable);
 	}
 	
 	render() {
@@ -65,7 +64,8 @@ class Scene {
 	
 	renderFrame() {
 		this.gl.clearColor(0.5, 0.5, 0.5, 1.0);  
-		this.gl.clearDepth(1.0);                 
+		this.gl.clearDepth(1.0); 
+		// Testul de adâncime dezactivat pentru transparență
 		this.gl.disable(this.gl.DEPTH_TEST);
 		this.gl.enable(this.gl.BLEND);
 		//this.gl.depthFunc(this.gl.LEQUAL);
@@ -81,11 +81,10 @@ class Scene {
 		this.gl.uniformMatrix4fv(this.programInfo.uniformLocations.projectionMatrix, false, projectionMatrix);
 		this.gl.uniformMatrix4fv(this.programInfo.uniformLocations.viewMatrix, false, viewMatrix);
 				
-		// Per Object:
+		// Per Drawable:
 		for (const e of this.drawList) {
 			this.gl.uniformMatrix4fv(this.programInfo.uniformLocations.modelMatrix, false, mat4.create());
 			e.draw(this.programInfo);
-			e._DRAW_NAME(projectionMatrix, viewMatrix);
 		}
 		
 		// Per Scene:

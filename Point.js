@@ -16,11 +16,7 @@ class Point extends Drawable {
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.buffers.color);
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([...this.color, 1]), gl.STATIC_DRAW);
 	}
-	
-	_INIT_NAME() {
-		super._INIT_NAME();
-	}
-	
+
 	draw(programInfo) {
 		super.draw(programInfo);
 
@@ -34,11 +30,7 @@ class Point extends Drawable {
 		
 		this.gl.drawArrays(this.gl.POINTS, 0, 1);	
 	}
-	
-	_DRAW_NAME() {
-		super._DRAW_NAME();
-	}
-	
+
 	getNamePos() {
 		return this.position;
 	}

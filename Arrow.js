@@ -35,19 +35,19 @@ class Arrow extends Segment {
 		const shiftedBasePos5 = vec3.add(vec3.create(), basePos, newDir5);
 		const shiftedBasePos6 = vec3.add(vec3.create(), basePos, newDir6); 
 		
-		const p1 = new Point("P1", shiftedBasePos1, this.p2.color);
-		const p2 = new Point("P2", shiftedBasePos2, this.p2.color);
-		const p3 = new Point("P3", shiftedBasePos3, this.p2.color);
-		const p4 = new Point("P4", shiftedBasePos4, this.p2.color);
-		const p5 = new Point("P5", shiftedBasePos5, this.p2.color);
-		const p6 = new Point("P6", shiftedBasePos6, this.p2.color);
+		const p1 = new Point("", shiftedBasePos1, this.p2.color);
+		const p2 = new Point("", shiftedBasePos2, this.p2.color);
+		const p3 = new Point("", shiftedBasePos3, this.p2.color);
+		const p4 = new Point("", shiftedBasePos4, this.p2.color);
+		const p5 = new Point("", shiftedBasePos5, this.p2.color);
+		const p6 = new Point("", shiftedBasePos6, this.p2.color);
 		
-		this.s1 = new Segment("S1", this.p2, p1);
-		this.s2 = new Segment("S2", this.p2, p2);
-		this.s3 = new Segment("S3", this.p2, p3);
-		this.s4 = new Segment("S4", this.p2, p4);
-		this.s5 = new Segment("S5", this.p2, p5);
-		this.s6 = new Segment("S6", this.p2, p6);
+		this.s1 = new Segment("", this.p2, p1);
+		this.s2 = new Segment("", this.p2, p2);
+		this.s3 = new Segment("", this.p2, p3);
+		this.s4 = new Segment("", this.p2, p4);
+		this.s5 = new Segment("", this.p2, p5);
+		this.s6 = new Segment("", this.p2, p6);
 		
 		this.s1.init(gl);
 		this.s2.init(gl);

@@ -13,9 +13,9 @@ class CoordSystem extends Drawable {
 	
 	init(gl) {
 		super.init(gl);
-		this.xAxis = new Vector("x axis", new Point("x", vec3.fromValues(1, 0, 0), vec3.fromValues(1, 0, 0)));
-		this.yAxis = new Vector("y axis", new Point("y", vec3.fromValues(0, 1, 0), vec3.fromValues(0, 1, 0)));
-		this.zAxis = new Vector("z axis", new Point("z", vec3.fromValues(0, 0, 1), vec3.fromValues(0, 0, 1)));
+		this.xAxis = new Vector("", new Point("", vec3.fromValues(1, 0, 0), vec3.fromValues(1, 0, 0)));
+		this.yAxis = new Vector("", new Point("", vec3.fromValues(0, 1, 0), vec3.fromValues(0, 1, 0)));
+		this.zAxis = new Vector("", new Point("", vec3.fromValues(0, 0, 1), vec3.fromValues(0, 0, 1)));
 		
 		this.xAxis.init(gl);
 		this.yAxis.init(gl);
@@ -23,12 +23,7 @@ class CoordSystem extends Drawable {
 		
 		for (const e of this.drawList) {
 			e.init(gl);
-			e._INIT_NAME();
 		}
-	}
-	
-	_INIT_NAME() {
-		super._INIT_NAME();
 	}
 	
 	draw(programInfo) {
@@ -43,11 +38,10 @@ class CoordSystem extends Drawable {
 		
 		for (const e of this.drawList) {
 			e.draw(programInfo);
-			e._DRAW_NAME();
 		}
 	}
 	
-	_DRAW_NAME() {
-		super._DRAW_NAME();
+	getNamePos() {
+		return vec3.fromValues(0.333, 0.333, 0.333);
 	}
 }

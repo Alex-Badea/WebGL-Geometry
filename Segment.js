@@ -17,10 +17,6 @@ class Segment extends Drawable {
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([...this.p1.color, 1, ...this.p2.color, 1]), gl.STATIC_DRAW);
 	}
 	
-	_INIT_NAME() {
-		super._INIT_NAME();
-	}
-	
 	draw(programInfo) {
 		super.draw(programInfo);
 		
@@ -33,10 +29,6 @@ class Segment extends Drawable {
 		this.gl.enableVertexAttribArray(programInfo.attribLocations.vertexColor);
 		
 		this.gl.drawArrays(this.gl.LINES, 0, 2);	
-	}
-	
-	_DRAW_NAME() {
-		super._DRAW_NAME();
 	}
 	
 	getNamePos() {

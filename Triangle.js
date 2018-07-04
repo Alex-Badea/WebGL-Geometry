@@ -17,11 +17,7 @@ class Triangle extends Drawable {
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.buffers.color);
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([...this.p1.color, 0.5, ...this.p2.color, 0.5, ...this.p3.color, 0.5]), gl.STATIC_DRAW);
 	}
-	
-	_INIT_NAME() {
-		super._INIT_NAME();
-	}
-	
+
 	draw(programInfo) {
 		super.draw(programInfo);
 		
@@ -35,11 +31,7 @@ class Triangle extends Drawable {
 		
 		this.gl.drawArrays(this.gl.TRIANGLES, 0, 3);	
 	}
-	
-	_DRAW_NAME() {
-		super._DRAW_NAME();
-	}
-	
+
 	getNamePos() {
 		return vec3.fromValues((this.p1.position[0] + this.p2.position[0] + this.p3.position[0])/3,
 							   (this.p1.position[1] + this.p2.position[1] + this.p3.position[1])/3,
