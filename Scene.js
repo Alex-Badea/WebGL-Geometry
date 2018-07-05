@@ -50,8 +50,7 @@ class Scene {
 	}
 	
 	insert(drawable) {
-		drawable.init(this.gl);
-		this.drawList.push(drawable);
+		this.drawList.push(drawable.instantiate(this.gl, this.programInfo));
 	}
 	
 	render() {
@@ -65,7 +64,7 @@ class Scene {
 	renderFrame() {
 		this.gl.clearColor(0.5, 0.5, 0.5, 1.0);  
 		this.gl.clearDepth(1.0); 
-		// Testul de adÃ¢ncime dezactivat pentru transparenÈ›Äƒ
+		// Testul de adâncime dezactivat pentru transparen?ã
 		this.gl.disable(this.gl.DEPTH_TEST);
 		this.gl.enable(this.gl.BLEND);
 		//this.gl.depthFunc(this.gl.LEQUAL);
