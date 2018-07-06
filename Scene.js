@@ -18,8 +18,13 @@ class Scene {
 				modelMatrix: gl.getUniformLocation(program, 'uModelMatrix'),
 			}
 		};
-		this.eyePos = vec3.fromValues(0, 0, 1);
-		this.upDir = vec3.fromValues(0, 1, 0);
+		this.fov = 60;
+		this.aspect = gl.canvas.width/gl.canvas.height;
+		this.zNear = 0.1;
+		this.zFar = 100;
+		this.eyePos = vec3.fromValues(0,0,1);
+		this.lookPos = vec3.fromValues(0,0,0);
+		this.upDir = vec3.fromValues(0,1,0);
 		this.inputState = {mouseDown: false};
 		
 		document.onmouseup = e => this.inputState.mouseDown = false;
@@ -90,8 +95,8 @@ class Scene {
 		this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
 		
 		// Per Scene:
-		const projectionMatrix = mat4.perspective(mat4.create(), glMatrix.toRadian(60), 4/3, 0.1, 100);
-		const viewMatrix = mat4.lookAt(mat4.create(), this.eyePos, vec3.fromValues(0, 0, 0), this.upDir);
+		const projectionMatrix = mat4.perspective(mat4.create(), glMatrix.toRadian(this.fov), this.aspect, this.zNear, this.zFar);
+		const viewMatrix = mat4.lookAt(mat4.create(), this.eyePos, this.lookPos, this.upDir);
 
 		this.gl.useProgram(this.programInfo.program);
 		this.gl.uniformMatrix4fv(this.programInfo.uniformLocations.projectionMatrix, false, projectionMatrix);

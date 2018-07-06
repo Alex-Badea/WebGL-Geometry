@@ -31,7 +31,7 @@ class DrawableInstance {
 		if (this.drawable.name !== "" && this.drawable.name !== "NO_NAME") {
 			this.nameContainer = document.createElement("div");
 			this.nameContainer.innerHTML = this.drawable.name;
-			this.nameContainer.setAttribute("style", "position: absolute;-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;");
+			this.nameContainer.setAttribute("style", "position: absolute;-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;font-size: 12px;pointer-events: none");
 			document.body.appendChild(this.nameContainer);
 		}
 	}

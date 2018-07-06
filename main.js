@@ -9,38 +9,68 @@ function main() {
 		alert("Unable to initialize WebGL. Your browser or machine may not support it.");
 		return;
 	}
-	
+		
 	const scene = new Scene(gl);
 	const world = new CoordSystem("World", Colors.BLK, mat4.create());
-
+	// Declaring drawables
 	const p1 = new Point("P1", Colors.L_PNK, vec3.fromValues(-0.5, -0.5, 0.5));
-	const p2 = new Point("P2", Colors.L_GRN, vec3.fromValues(0.5, -0.5, 0.5));
-	const p3 = new Point("P3", Colors.D_GRN, vec3.fromValues(0.5, 0.5, 0.5));
-	const p4 = new Point("P4", Colors.RED, vec3.fromValues(-0.5, 0.5, 0.5));
-	const p5 = new Point("P5", Colors.BLU, vec3.fromValues(-0.5, -0.5, -0.5));
-	const p6 = new Point("P6", Colors.PNK, vec3.fromValues(0.5, -0.5, -0.5));
-	const p7 = new Point("P7", Colors.D_RED, vec3.fromValues(0.5, 0.5, -0.5));
-	const p8 = new Point("P8", Colors.L_RED, vec3.fromValues(-0.5, 0.5, -0.5));
-	const t1 = new Triangle("", Colors.L_YLW, p1, p2, p3);
-	const t2 = new Triangle("", Colors.L_YLW, p1, p3, p4);
-	const t3 = new Triangle("", Colors.D_PNK, p5, p6, p7);
-	const t4 = new Triangle("", Colors.D_PNK, p5, p7, p8);
-	const t5 = new Triangle("", Colors.RED, p5, p1, p4);
-	const t6 = new Triangle("", Colors.RED, p5, p4, p8);	
-	const t7 = new Triangle("", Colors.BLU, p2, p6, p7);
-	const t8 = new Triangle("", Colors.BLU, p2, p7, p3);
-	const cs1 = new CoordSystem("cs1", Colors.BLU, mat4.mul(mat4.create(), mat4.fromRotation(mat4.create(), glMatrix.toRadian(45), vec3.fromValues(1,1,1)), mat4.mul(mat4.create(), mat4.fromTranslation(mat4.create(), vec3.fromValues(1.5,0,0)), mat4.fromScaling(mat4.create(), vec3.fromValues(1,0.3,0.5)))));
-	
-	{
+	const p2 = new Point("P2", Colors.D_BLU, vec3.fromValues(0.5, -0.5, 0.5));	
+	const p3 = new Point("P3", Colors.YLW, vec3.fromValues(0.5, 0.5, 0.5));	
+	const p4 = new Point("P4", Colors.WHT, vec3.fromValues(-0.5, 0.5, 0.5));	
+	const p5 = new Point("P5", Colors.D_CYN, vec3.fromValues(-0.5, -0.5, -0.5));	
+	const p6 = new Point("P6", Colors.L_RED, vec3.fromValues(0.5, -0.5, -0.5));	
+	const p7 = new Point("P7", Colors.D_PNK, vec3.fromValues(0.5, 0.5, -0.5));	
+	const p8 = new Point("P8", Colors.GRN, vec3.fromValues(-0.5, 0.5, -0.5));
+	const s1 = new Segment("S1", Colors.L_BLU, p1, p2);
+	const s2 = new Segment("S2", Colors.RED, p1, p4);
+	const s3 = new Segment("S3", Colors.L_GRN, p1, p5);
+	const s4 = new Segment("S4", Colors.BLK, p2, p3);
+	const s5 = new Segment("S5", Colors.L_YLW, p2, p6);
+	const s6 = new Segment("S6", Colors.YLW, p3, p4);
+	const s7 = new Segment("S7", Colors.CYN, p3, p7);
+	const s8 = new Segment("S8", Colors.D_GRN, p4, p8);
+	const s9 = new Segment("S9", Colors.WHT, p5, p6);
+	const s10 = new Segment("S10", Colors.L_RED, p5, p8);
+	const s11 = new Segment("S11", Colors.D_BLU, p6, p7);
+	const s12 = new Segment("S12", Colors.D_RED, p7, p8);
+	/* Building drawable hierarchy */ {  
 		world.add(p1, p2, p3, p4, p5, p6, p7, p8);
-		world.add(t1, t2, t3, t4, t5, t6, t7, t8);
-		{
-			cs1.add(p1, p2, p3, p4, p5, p6, p7, p8);
-			cs1.add(t1, t2, t3, t4, t5, t6, t7, t8);
-		}
-		world.add(cs1);
+		world.add(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12);
 	}
-	
 	scene.insert(world);
 	scene.render();
+	
+	// Post modifications
+	document.getElementById("slider1").addEventListener("input", function(e) {
+		const val = this.value-1;
+		p1.position[0] = val;
+	});
+	document.getElementById("slider2").addEventListener("input", function(e) {
+		const val = this.value-1;
+		p2.position[1] = val;
+	});	
+	document.getElementById("slider3").addEventListener("input", function(e) {
+		const val = this.value;
+		p3.position[2] = val;
+	});	
+	document.getElementById("slider4").addEventListener("input", function(e) {
+		const val = this.value-1;
+		p4.position[0] = val;
+	});	
+	document.getElementById("slider5").addEventListener("input", function(e) {
+		const val = this.value-1;
+		p5.position[1] = val;
+	});	
+	document.getElementById("slider6").addEventListener("input", function(e) {
+		const val = this.value-1;
+		p6.position[2] = val;
+	});	
+	document.getElementById("slider7").addEventListener("input", function(e) {
+		const val = this.value;
+		p7.position[0] = val;
+	});	
+	document.getElementById("slider8").addEventListener("input", function(e) {
+		const val = this.value;
+		p8.position[1] = val;
+	});	
 }

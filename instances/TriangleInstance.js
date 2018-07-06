@@ -1,22 +1,18 @@
 class TriangleInstance extends DrawableInstance {
 	constructor(drawable, gl, programInfo) {
 		super(drawable, gl, programInfo);
-		
-		gl.bindBuffer(gl.ARRAY_BUFFER, this.buffers.position);
-		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([...drawable.p1.position, ...drawable.p2.position, ...drawable.p3.position]), gl.STATIC_DRAW);
-		
-		gl.bindBuffer(gl.ARRAY_BUFFER, this.buffers.color);
-		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([...drawable.color, 0.5, ...drawable.color, 0.5, ...drawable.color, 0.5]), gl.STATIC_DRAW);
 	}
 
 	draw() {
 		super.draw();
 		
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.position);
+		this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array([...this.drawable.p1.position, ...this.drawable.p2.position, ...this.drawable.p3.position]), this.gl.STATIC_DRAW);
 		this.gl.vertexAttribPointer(this.programInfo.attribLocations.vertexPosition, 3, this.gl.FLOAT, false, 0, 0);
 		this.gl.enableVertexAttribArray(this.programInfo.attribLocations.vertexPosition);
 		
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.color);
+		this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array([...this.drawable.color, 0.5, ...this.drawable.color, 0.5, ...this.drawable.color, 0.5]), this.gl.STATIC_DRAW);
 		this.gl.vertexAttribPointer(this.programInfo.attribLocations.vertexColor, 4, this.gl.FLOAT, false, 0, 0);
 		this.gl.enableVertexAttribArray(this.programInfo.attribLocations.vertexColor);
 		
