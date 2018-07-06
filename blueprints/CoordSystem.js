@@ -13,7 +13,8 @@ class CoordSystem extends DrawableBlueprint {
 		return new CoordSystemInstance(this, gl, programInfo);
 	}
 	
-	add(drawable) {
-		this.drawList.push(drawable);
+	add() {
+		for (let i = 0; i < arguments.length; i++)
+			this.drawList.push(arguments[i]);
 	}
 }

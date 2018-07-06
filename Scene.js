@@ -68,7 +68,8 @@ class Scene {
 	}
 	
 	insert(drawable) {
-		this.drawList.push(drawable.instantiate(this.gl, this.programInfo));
+		for (let i = 0; i < arguments.length; i++)
+			this.drawList.push(arguments[i].instantiate(this.gl, this.programInfo));
 	}
 	
 	render() {
