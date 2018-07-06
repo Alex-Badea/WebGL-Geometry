@@ -12,14 +12,14 @@ class DrawableInstance {
 			color: gl.createBuffer()
  		};
 		
-		this._INIT_NAME(drawable, gl);
+		this._INIT_NAME();
 	}
 	
 	draw() {
 		if (this.gl.getUniform(this.programInfo.program, this.programInfo.uniformLocations.modelMatrix, 0).every((e, i) => mat4.fromValues(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)[i] === e))
 			throw new Error("Stray drawable not bound to any drawing context (coordinate system): " + this.name);
 		
-		this._DRAW_NAME(this.programInfo);
+		this._DRAW_NAME();
 	}
 	
 	getNamePos() {
@@ -27,26 +27,20 @@ class DrawableInstance {
 	}
 	
 	// Depreciat: va fi înocuitã când se va gãsi o metodã mai bunã
-	_INIT_NAME(drawable, gl) {
-		if (drawable == undefined || gl == undefined)
-			throw new Error("Undefined or null params");
-		
-		// NU MAI CREA DACÃ NUMELE E GOL@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+	_INIT_NAME() {
+		// NU MAI CREA DACÃ NUMELE E GOL@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 		this.nameContainer = document.createElement("div");
-		this.nameContainer.innerHTML = drawable.name;
+		this.nameContainer.innerHTML = this.drawable.name;
 		this.nameContainer.setAttribute("style", "position: absolute;-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;");
 		document.body.appendChild(this.nameContainer);
 	}
 	
 	// Depreciat: va fi înocuitã când se va gãsi o metodã mai bunã
-	// DE TESTAT DACÃ SE DESENEAZÃ RELATIV LA PÂNZÃ SAU RELATIV LA FEREASTRÃ; REPARÃ DACÃ RELATIV LA FEREASTRÃ
-	_DRAW_NAME(programInfo) {
-		if (programInfo == undefined)
-			throw new Error("Undefined or null params");
-		
-		const projectionMatrix = this.gl.getUniform(programInfo.program, programInfo.uniformLocations.projectionMatrix, 0);
-		const viewMatrix = this.gl.getUniform(programInfo.program, programInfo.uniformLocations.viewMatrix, 0);
-		const modelMatrix = this.gl.getUniform(programInfo.program, programInfo.uniformLocations.modelMatrix, 0);
+	// DE TESTAT DACÃ SE DESENEAZÃ RELATIV LA PÂNZÃ SAU RELATIV LA FEREASTRÃ; REPARÃ DACÃ RELATIV LA FEREASTRÃ@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+	_DRAW_NAME() {
+		const projectionMatrix = this.gl.getUniform(this.programInfo.program, this.programInfo.uniformLocations.projectionMatrix, 0);
+		const viewMatrix = this.gl.getUniform(this.programInfo.program, this.programInfo.uniformLocations.viewMatrix, 0);
+		const modelMatrix = this.gl.getUniform(this.programInfo.program, this.programInfo.uniformLocations.modelMatrix, 0);
 				
 		const namePos = vec4.fromValues(...this.getNamePos(), 1);
 		const mvp = mat4.multiply(mat4.create(), mat4.multiply(mat4.create(), projectionMatrix, viewMatrix), modelMatrix);

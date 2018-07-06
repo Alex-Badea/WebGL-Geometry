@@ -44,9 +44,27 @@ class Scene {
 			lastMousePos = vec2.fromValues(e.clientX, e.clientY);
 		};
 		gl.canvas.onwheel = e => {
+			e.preventDefault();
 			let frontDir = vec3.normalize(vec3.create(), vec3.negate(vec3.create(), this.eyePos));
 			this.eyePos = vec3.add(vec3.create(), this.eyePos, vec3.scale(vec3.create(), frontDir, -e.deltaY*0.001));
 		};
+		document.onkeypress = e => {
+			switch (e.key) {
+			case 'p':
+				const rect = this.gl.canvas.getBoundingClientRect();
+				html2canvas(document.body, {x:rect.x, y:rect.y, height:rect.height, width:rect.width}).then(canvas => {
+					canvas.left = 30;
+					canvas.top = 30;
+					const url = canvas.toDataURL("image/png");
+					const link = document.createElement('a');
+					link.href = url;
+					link.download = 'Scene.png';
+					document.body.appendChild(link);
+					link.click();
+				});
+				break;
+			}
+		}
 	}
 	
 	insert(drawable) {
