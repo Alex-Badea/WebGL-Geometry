@@ -1,6 +1,6 @@
 # WebGL-Geometry
 A WebGL library for drawing and graphing primitives in flexible contexts.
-![alt text](https://image.ibb.co/f9pEhJ/2018_07_06_1.png)
+![alt text](https://image.ibb.co/c9ABey/Scene_20.png)
 ```diff
 + Can draw names of drawables
 + Supports shared drawable across multiple contexts
