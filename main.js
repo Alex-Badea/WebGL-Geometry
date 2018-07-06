@@ -11,6 +11,8 @@ function main() {
 	}
 	
 	const scene = new Scene(gl);
+	const world = new CoordSystem("World", Colors.BLK, mat4.create());
+
 	const p1 = new Point("P1", Colors.L_PNK, vec3.fromValues(-0.5, -0.5, 0.5));
 	const p2 = new Point("P2", Colors.L_GRN, vec3.fromValues(0.5, -0.5, 0.5));
 	const p3 = new Point("P3", Colors.D_GRN, vec3.fromValues(0.5, 0.5, 0.5));
@@ -27,9 +29,8 @@ function main() {
 	const t6 = new Triangle("", Colors.RED, p5, p4, p8);	
 	const t7 = new Triangle("", Colors.BLU, p2, p6, p7);
 	const t8 = new Triangle("", Colors.BLU, p2, p7, p3);
-	const cs1 = new CoordSystem("cs1", vec3.fromValues(0, 0, 0), mat4.mul(mat4.create(), mat4.fromRotation(mat4.create(), glMatrix.toRadian(45), vec3.fromValues(1,1,1)), mat4.mul(mat4.create(), mat4.fromTranslation(mat4.create(), vec3.fromValues(1.5,0,0)), mat4.fromScaling(mat4.create(), vec3.fromValues(1,0.3,0.5)))));
+	const cs1 = new CoordSystem("cs1", Colors.BLU, mat4.mul(mat4.create(), mat4.fromRotation(mat4.create(), glMatrix.toRadian(45), vec3.fromValues(1,1,1)), mat4.mul(mat4.create(), mat4.fromTranslation(mat4.create(), vec3.fromValues(1.5,0,0)), mat4.fromScaling(mat4.create(), vec3.fromValues(1,0.3,0.5)))));
 	
-	const world = new CoordSystem("World", vec3.fromValues(0, 0, 0), mat4.create());
 	{
 		world.add(p1, p2, p3, p4, p5, p6, p7, p8);
 		world.add(t1, t2, t3, t4, t5, t6, t7, t8);
@@ -39,6 +40,7 @@ function main() {
 		}
 		world.add(cs1);
 	}
+	
 	scene.insert(world);
 	scene.render();
 }
