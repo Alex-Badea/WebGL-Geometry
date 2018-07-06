@@ -4,7 +4,7 @@ A WebGL library for drawing and graphing primitives in flexible contexts.
 ```diff
 + Can draw names of drawables
 + Supports shared drawable across multiple contexts
-- Easy screenshot utility
++ Easy screenshot utility (on key 'P')
 - Low memory footprint and high efficiency
 - Can calculate and draw intersections between drawables
 ```
