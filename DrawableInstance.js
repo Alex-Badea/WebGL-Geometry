@@ -37,7 +37,6 @@ class DrawableInstance {
 	}
 	
 	// Depreciat: va fi înocuitã când se va gãsi o metodã mai bunã
-	// DE TESTAT DACÃ SE DESENEAZÃ RELATIV LA PÂNZÃ SAU RELATIV LA FEREASTRÃ; REPARÃ DACÃ RELATIV LA FEREASTRÃ@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 	_DRAW_NAME() {
 		if (this.nameContainer != undefined) {
 			const projectionMatrix = this.gl.getUniform(this.programInfo.program, this.programInfo.uniformLocations.projectionMatrix, 0);
@@ -50,9 +49,10 @@ class DrawableInstance {
 			const nameNormScrPos = [nameMvpPos[0]/nameMvpPos[3], nameMvpPos[1]/nameMvpPos[3]];
 			const nameScrPos = [(nameNormScrPos[0]*0.5+0.5)*this.gl.canvas.width,
 								(nameNormScrPos[1]*-0.5+0.5)*this.gl.canvas.height];
+			const bound = this.gl.canvas.getBoundingClientRect();
 			if (nameScrPos[0] > 0 && nameScrPos[0] < this.gl.canvas.width && nameScrPos[1] > 0 && nameScrPos[1] < this.gl.canvas.height && nameMvpPos[2] > 0) {
-				this.nameContainer.style.left = nameScrPos[0];
-				this.nameContainer.style.top = nameScrPos[1];
+				this.nameContainer.style.left = nameScrPos[0] + bound.x;
+				this.nameContainer.style.top = nameScrPos[1] + bound.y;
 				this.nameContainer.style.display = "inline";
 			} else
 				this.nameContainer.style.display = "none";

@@ -20,8 +20,10 @@ class TriangleInstance extends DrawableInstance {
 		this.gl.vertexAttribPointer(this.programInfo.attribLocations.vertexColor, 4, this.gl.FLOAT, false, 0, 0);
 		this.gl.enableVertexAttribArray(this.programInfo.attribLocations.vertexColor);
 		
-		// DESENEAZÃ CU TESTUL DE ADÂNCIME OPRIT@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+		// Testul de adâncime dezactivat pentru transparen?ã
+		this.gl.disable(this.gl.DEPTH_TEST);
 		this.gl.drawArrays(this.gl.TRIANGLES, 0, 3);	
+		this.gl.enable(this.gl.DEPTH_TEST);
 	}
 
 	getNamePos() {

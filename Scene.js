@@ -83,10 +83,8 @@ class Scene {
 	renderFrame() {
 		this.gl.clearColor(0.5, 0.5, 0.5, 1.0);  
 		this.gl.clearDepth(1.0); 
-		// Testul de adâncime dezactivat pentru transparen?ã
-		this.gl.disable(this.gl.DEPTH_TEST);
+		this.gl.enable(this.gl.DEPTH_TEST);
 		this.gl.enable(this.gl.BLEND);
-		//this.gl.depthFunc(this.gl.LEQUAL);
 		this.gl.blendEquation(this.gl.FUNC_ADD);		
 		this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA );
 		this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
