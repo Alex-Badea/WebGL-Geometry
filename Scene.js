@@ -29,7 +29,7 @@ class Scene {
 		
 		document.onmouseup = e => this.inputState.mouseDown = false;
 		document.onmousedown = e => this.inputState.mouseDown = true;
-		let lastMousePos = [];
+		let lastMousePos = [0, 0];
 		gl.canvas.onmousemove = e => {
 			if (this.inputState.mouseDown) {
 				const deltaX = e.clientX - lastMousePos[0];
