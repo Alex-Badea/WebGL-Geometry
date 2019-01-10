@@ -11,7 +11,7 @@ function main() {
 	}
 		
 	const scene = new Scene(gl);
-	const world = new CoordSystem("World", Colors.BLK, mat4.create());
+	const world = new CoordSystem("World", [Colors.RED, Colors.GRN, Colors.BLU], mat4.create());
 	
 	// Declaring drawables
 	const p1 = new Point("P1", Colors.L_RED, vec3.fromValues(0.2, 0.3, -0.2));
@@ -34,6 +34,11 @@ function main() {
 		world.add(t2.intersect(v1));
 	}
 	
+	/*var cpl = new Model(gl, );
+	{
+		world.add(cpl);
+	}*/
+
 	// Post processing:
 	////
 	

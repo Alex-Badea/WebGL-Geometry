@@ -188,7 +188,6 @@ class Triangle extends DrawableBlueprint {
 				else isectpt2 = isectpointB1;
 			}
 		}
-		console.log(isectpointA1, isectpointA2, isectpointB1, isectpointB2)
 		return [vec3.fromValues(...isectpt1), vec3.fromValues(...isectpt2)];
 	}
 }

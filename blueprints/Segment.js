@@ -64,7 +64,6 @@ class Segment extends DrawableBlueprint {
 		const P1 = this.p1.position;
 		const P2 = this.p2.position;
 		const M = pointPos;
-		console.log(P1, P2, M)
 		const P1M = vec3.sub(vec3.create(), M, P1);
 		const P2M = vec3.sub(vec3.create(), M, P2);
 		return vec3.dot(P1M, P2M) <= 0.0001;

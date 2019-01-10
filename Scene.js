@@ -3,7 +3,7 @@ class Scene {
 		if (gl == undefined)
 			throw Error("Undefined or null params");
 		const program = this.initShaderProgram(gl);
-		
+
 		this.gl = gl;
 		this.drawList = [];
 		this.programInfo = {
@@ -162,7 +162,7 @@ class Scene {
 	
 	loadShader(gl, type, source) {
 		const shader = gl.createShader(type);
-		
+
 		gl.shaderSource(shader, source);
 		
 		gl.compileShader(shader);
@@ -172,7 +172,7 @@ class Scene {
 			gl.deleteShader(shader);
 			return null;
 		}
-		
+
 		return shader;
 	}
 }

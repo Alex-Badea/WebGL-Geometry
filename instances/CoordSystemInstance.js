@@ -1,14 +1,10 @@
 class CoordSystemInstance extends DrawableInstance {
 	constructor(drawable, gl, programInfo) {
 		super(drawable, gl, programInfo);
-		
-		const r = drawable.color[0];
-		const g = drawable.color[1];
-		const b = drawable.color[2];
-		const den = Math.max(r, g, b) + 1;
-		this.xAxis = new Vector("", vec3.fromValues((r+1)/den, g/den, b/den), new Point("", vec3.fromValues(0,0,0), vec3.fromValues(1, 0, 0))).instantiate(gl, programInfo);
-		this.yAxis = new Vector("", vec3.fromValues(r/den, (g+1)/den, b/den), new Point("", vec3.fromValues(0,0,0), vec3.fromValues(0, 1, 0))).instantiate(gl, programInfo);
-		this.zAxis = new Vector("", vec3.fromValues(r/den, g/den, (b+1)/den), new Point("", vec3.fromValues(0,0,0), vec3.fromValues(0, 0, 1))).instantiate(gl, programInfo);
+
+		this.xAxis = new Vector("", drawable.color[0], new Point("", vec3.fromValues(0,0,0), vec3.fromValues(1, 0, 0))).instantiate(gl, programInfo);
+		this.yAxis = new Vector("", drawable.color[1], new Point("", vec3.fromValues(0,0,0), vec3.fromValues(0, 1, 0))).instantiate(gl, programInfo);
+		this.zAxis = new Vector("", drawable.color[2], new Point("", vec3.fromValues(0,0,0), vec3.fromValues(0, 0, 1))).instantiate(gl, programInfo);
 
 		this.instancesDrawList = [];
 		for (let i = 0; i < drawable.drawList.length; i++)
