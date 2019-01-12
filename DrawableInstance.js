@@ -58,4 +58,8 @@ class DrawableInstance {
 				this.nameContainer.style.display = "none";
 		}
 	}
+
+	erase() {
+		document.body.removeChild(this.nameContainer);
+	}
 }

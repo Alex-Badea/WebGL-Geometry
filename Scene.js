@@ -91,27 +91,31 @@ class Scene {
 		this.gl.enable(this.gl.DEPTH_TEST);
 		this.gl.enable(this.gl.BLEND);
 		this.gl.blendEquation(this.gl.FUNC_ADD);		
-		this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA );
+		this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
 		this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
 		
 		// Per Scene:
 		const projectionMatrix = mat4.perspective(mat4.create(), glMatrix.toRadian(this.fov), this.aspect, this.zNear, this.zFar);
 		const viewMatrix = mat4.lookAt(mat4.create(), this.eyePos, this.lookPos, this.upDir);
 
-		this.gl.useProgram(this.programInfo.program);
 		this.gl.uniformMatrix4fv(this.programInfo.uniformLocations.projectionMatrix, false, projectionMatrix);
 		this.gl.uniformMatrix4fv(this.programInfo.uniformLocations.viewMatrix, false, viewMatrix);
 				
 		// Per Drawable:
 		for (const e of this.drawList) {
 			this.gl.uniformMatrix4fv(this.programInfo.uniformLocations.modelMatrix, false, mat4.create());
-			e.draw(this.programInfo);
+			e.draw();
 		}
 		
 		// Per Scene:
 		this.gl.uniformMatrix4fv(this.programInfo.uniformLocations.projectionMatrix, false, mat4.fromValues(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0));
 		this.gl.uniformMatrix4fv(this.programInfo.uniformLocations.viewMatrix, false, mat4.fromValues(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0));
 		this.gl.uniformMatrix4fv(this.programInfo.uniformLocations.modelMatrix, false, mat4.fromValues(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0));
+	}
+
+	redraw() {
+		this.drawList.forEach(e => e.erase());
+		this.drawList = this.drawList.map(e => e.drawable.instantiate(this.gl, this.programInfo));
 	}
 	
 	initShaderProgram(gl) {
@@ -151,6 +155,11 @@ class Scene {
 		gl.attachShader(shaderProgram, vertexShader);
 		gl.attachShader(shaderProgram, fragmentShader);
 		gl.linkProgram(shaderProgram);
+		gl.useProgram(shaderProgram);
+		gl.detachShader(shaderProgram, fragmentShader);
+		gl.detachShader(shaderProgram, vertexShader);
+		gl.deleteShader(fragmentShader);
+		gl.deleteShader(vertexShader);
 		
 		if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
 			alert('Unable to initialize the shader program: ' + gl.getProgramInfoLog(shaderProgram));

@@ -9,39 +9,57 @@ function main() {
 		alert("Unable to initialize WebGL. Your browser or machine may not support it.");
 		return;
 	}
-		
+	
 	const scene = new Scene(gl);
 	const world = new CoordSystem("World", [Colors.RED, Colors.GRN, Colors.BLU], mat4.create());
-	
-	// Declaring drawables
-	const p1 = new Point("P1", Colors.L_RED, vec3.fromValues(0.2, 0.3, -0.2));
-	const p2 = new Point("P2", Colors.L_GRN, vec3.fromValues(1, 0.6, 0));
-	const p3 = new Point("P3", Colors.L_BLU, vec3.fromValues(0, 2, 1));
-	const p4 = new Point("P4", Colors.L_YLW, vec3.fromValues(0.5, 1.4, 0));
-	const p5 = new Point("P5", Colors.L_CYN, vec3.fromValues(0.4, 0.1, 0.8));
-	const p6 = new Point("P6", Colors.L_PNK, vec3.fromValues(0.5, 0.4, -0.5));
-	const p7 = new Point("P7", Colors.BLK, vec3.fromValues(0.6, 0.6, 0.3));
-	const t1 = new Triangle("T1", Colors.BLU, p1, p2, p3);
-	const t2 = new Triangle("T2", Colors.RED, p4, p5, p6);
-	const v1 = new Vector("V1", Colors.PNK, p7);
 
-	// Building drawable hierarchy
-	{  
-		world.add(p1, p2, p3, p4, p5, p6);
-		world.add(t1, t2);
-		world.add(t1.intersect(t2));
-		world.add(v1);
-		world.add(t2.intersect(v1));
-	}
+	// Declararea primitivelor
+	const p1 = new Point("P1", Colors.D_GRN, vec3.fromValues(-0.5, -0.5, 0.5));
+	const p2 = new Point("P2", Colors.PNK, vec3.fromValues(0.5, -0.5, 0.5));
+	const p3 = new Point("P3", Colors.D_CYN, vec3.fromValues(0.5, 0.5, 0.5));
+	const p4 = new Point("P4", Colors.L_CYN, vec3.fromValues(-0.5, 0.5, 0.5));
+	const p5 = new Point("P5", Colors.BLU, vec3.fromValues(-0.5, -0.5, -0.5));
+	const p6 = new Point("P6", Colors.RED, vec3.fromValues(0.5, -0.5, -0.5));
+	const p7 = new Point("P7", Colors.L_YLW, vec3.fromValues(0.5, 0.5, -0.5));
+	const p8 = new Point("P8", Colors.D_GRN, vec3.fromValues(-0.5, 0.5, -0.5));
 	
-	/*var cpl = new Model(gl, );
+	const t1 = new Triangle("", Colors.RED, p1, p2, p3);
+	const t2 = new Triangle("", Colors.RED, p1, p3, p4);
+	const t3 = new Triangle("", Colors.YLW, p5, p6, p7);
+	const t4 = new Triangle("", Colors.YLW, p5, p7, p8);
+	const t5 = new Triangle("", Colors.BLU, p5, p1, p4);
+	const t6 = new Triangle("", Colors.BLU, p5, p4, p8);
+	const t7 = new Triangle("", Colors.CYN, p2, p6, p7);
+	const t8 = new Triangle("", Colors.CYN, p2, p7, p3);
+
+	const cs1 = new CoordSystem("cs1", [Colors.RED, Colors.GRN, Colors.BLU],
+		mat4.rotate(mat4.create(),
+			mat4.scale(mat4.create(),
+				mat4.fromTranslation(mat4.create(),
+				vec3.fromValues(1, 1, 1)),
+			vec3.fromValues(0.2, 0.4, 0.3)),
+		1.28, vec3.fromValues(1, 1, 1)))
+
+	// Structura ierarhiei primitivelor
 	{
-		world.add(cpl);
-	}*/
+		world.add(p1, p2, p3, p4, p5, p6, p7, p8);
+		/*world.add(t1, t2, t3, t4, t5, t6, t7, t8);
+		{
+			cs1.add(p1, p2, p3, p4, p5, p6, p7, p8);
+			cs1.add(t1, t2, t3, t4, t5, t6, t7, t8);
+		}
+		world.add(cs1);*/
+	}
 
-	// Post processing:
-	////
-	
+	// Post-procesare:
+	const imgInput = document.getElementById("texInput");
+	const fr = new FileReader();
+	fr.onload = e => {
+		world.add(t1);
+		scene.redraw();
+	}
+	imgInput.onchange = () => fr.readAsDataURL(imgInput.files[0]);
+
 	scene.insert(world);
 	scene.render();
 }

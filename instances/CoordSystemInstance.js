@@ -17,17 +17,22 @@ class CoordSystemInstance extends DrawableInstance {
 		this.gl.uniformMatrix4fv(this.programInfo.uniformLocations.modelMatrix, false, modelMatrix);
 		super.draw();
 
-		this.xAxis.draw(this.programInfo);
-		this.yAxis.draw(this.programInfo);
-		this.zAxis.draw(this.programInfo);
+		this.xAxis.draw();
+		this.yAxis.draw();
+		this.zAxis.draw();
 		
 		for (const e of this.instancesDrawList) {
-			e.draw();
 			this.gl.uniformMatrix4fv(this.programInfo.uniformLocations.modelMatrix, false, modelMatrix);
+			e.draw();
 		}
 	}
 	
 	getNamePos() {
 		return vec3.fromValues(0.1, 0.1, 0.1);
+	}
+
+	erase() {
+		super.erase();
+		this.instancesDrawList.forEach(e => e.erase());
 	}
 }
