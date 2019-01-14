@@ -13,37 +13,14 @@ class SpecialDrawableInstance {
 			texCoord: gl.createBuffer(),
 			index: gl.createBuffer()
  		};
-	}
 
-	draw() {
-		// Dezleagă programul implicit
-		this.overrideDefaultShaders();
-
-		// Desenează în noul context
-		this.drawDefault();
-		
-		// Releagă programul implicit
-		this.gl.useProgram(this.defaultProgramInfo.program);	
-	}
-	
-	drawDefault() {
-		if (this.gl.getUniform(this.currentProgramInfo.program, this.currentProgramInfo.uniformLocations.modelMatrix, 0).
-		every((e, i) => mat4.fromValues(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)[i] === e))
-			throw new Error("Stray specialDrawable not bound to any drawing context (coordinate system)");
-
-		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.position);
+ 		// Legarea tampoanelor
+ 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.position);
 		this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(this.drawable.positions.map(e => Array.from(e)).flat()), this.gl.STATIC_DRAW);
-		this.gl.vertexAttribPointer(this.currentProgramInfo.attribLocations.vertexPosition, 3, this.gl.FLOAT, false, 0, 0);
-		this.gl.enableVertexAttribArray(this.currentProgramInfo.attribLocations.vertexPosition);
-		
-		if (this.drawable.normals.length)
-			throw Error("Unimplemented")
 
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.color);
 		this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array((this.drawable.colors.length ? this.drawable.colors : [...Array(this.drawable.positions.length)].map(e => [Math.random(), Math.random(), Math.random(), Math.random()])).map(e => Array.from(e).concat(1)).flat()), this.gl.STATIC_DRAW);
-		this.gl.vertexAttribPointer(this.currentProgramInfo.attribLocations.vertexColor, 4, this.gl.FLOAT, false, 0, 0);
-		this.gl.enableVertexAttribArray(this.currentProgramInfo.attribLocations.vertexColor);
-
+		
 		this.gl.activeTexture(this.gl.TEXTURE0);
 		this.gl.bindTexture(this.gl.TEXTURE_2D, this.buffers.texture);
 		if (this.drawable.texInfo.image)
@@ -53,46 +30,87 @@ class SpecialDrawableInstance {
        	this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
        	this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
        	this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR);
+
+       	this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.texCoord);
+		this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array((this.drawable.texInfo.coords.length ? this.drawable.texInfo.coords : [...Array(this.drawable.positions.length)].map(e => [Math.random(), Math.random()])).map(e => Array.from(e)).flat()), this.gl.STATIC_DRAW);
+	
+		if (this.drawable.faces.length != 0) {
+			this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.buffers.index);
+			this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.drawable.faces.map(e => Array.from(e)).flat()), this.gl.STATIC_DRAW);
+		}
+
+		// Compilarea shader-elor
+		this.currentProgram = this.initShaderProgram();
+	}
+
+	draw() {
+		// Dezleagă programul implicit
+		this.overrideDefaultProgram();
+
+		// Desenează în noul context
+		this.drawDefault();
+		
+		// Releagă programul implicit
+		this.gl.useProgram(this.defaultProgramInfo.program);	
+	}
+	
+	drawDefault() {
+		if (this.gl.getUniform(this.currentProgramInfo.program, this.currentProgramInfo.uniformLocations.modelMatrix, 0)
+		.every((e, i) => mat4.fromValues(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)[i] === e))
+			throw new Error("Stray specialDrawable not bound to any drawing context (coordinate system)");
+
+		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.position);
+		this.gl.vertexAttribPointer(this.currentProgramInfo.attribLocations.vertexPosition, 3, this.gl.FLOAT, false, 0, 0);
+		this.gl.enableVertexAttribArray(this.currentProgramInfo.attribLocations.vertexPosition);
+		
+		if (this.drawable.normals.length)
+			throw Error("Unimplemented")
+
+		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.color);
+		this.gl.vertexAttribPointer(this.currentProgramInfo.attribLocations.vertexColor, 4, this.gl.FLOAT, false, 0, 0);
+		this.gl.enableVertexAttribArray(this.currentProgramInfo.attribLocations.vertexColor);
+
+		this.gl.activeTexture(this.gl.TEXTURE0);
+		this.gl.bindTexture(this.gl.TEXTURE_2D, this.buffers.texture);
        	this.gl.uniform1i(this.currentProgramInfo.uniformLocations.sampler, 0);
 
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.texCoord);
-		this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array((this.drawable.texInfo.coords.length ? this.drawable.texInfo.coords : [...Array(this.drawable.positions.length)].map(e => [Math.random(), Math.random()])).map(e => Array.from(e)).flat()), this.gl.STATIC_DRAW);
 		this.gl.vertexAttribPointer(this.currentProgramInfo.attribLocations.vertexTexCoord, 2, this.gl.FLOAT, false, 0, 0);
 		this.gl.enableVertexAttribArray(this.currentProgramInfo.attribLocations.vertexTexCoord);
 
 		if (this.buffers.index.length != 0) {
 			this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.buffers.index);
-			this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.drawable.faces.map(e => Array.from(e)).flat()), this.gl.STATIC_DRAW);
 			this.gl.drawElements(this.gl.TRIANGLES, this.drawable.faces.length*3, this.gl.UNSIGNED_SHORT, 0);
 		} else {
 			this.gl.drawArrays(this.gl.POINTS, 0, this.drawable.positions.length);
 		}
 	}
 
-	overrideDefaultShaders() {
+	overrideDefaultProgram() {
 		const modelMatrix = this.gl.getUniform(this.defaultProgramInfo.program, this.defaultProgramInfo.uniformLocations.modelMatrix, 0);
 		const viewMatrix = this.gl.getUniform(this.defaultProgramInfo.program, this.defaultProgramInfo.uniformLocations.viewMatrix, 0);
 		const projectionMatrix = this.gl.getUniform(this.defaultProgramInfo.program, this.defaultProgramInfo.uniformLocations.projectionMatrix, 0);
 
-		const program = this.initShaderProgram();
+		this.gl.useProgram(this.currentProgram);
 		this.currentProgramInfo = {
-			program,
+			program: this.currentProgram,
 			attribLocations: {
-				vertexPosition: this.gl.getAttribLocation(program, 'aVertexPosition'),
-				vertexNormal: this.gl.getAttribLocation(program, 'aVertexNormal'),
-				vertexColor: this.gl.getAttribLocation(program, 'aVertexColor'),
-				vertexTexCoord: this.gl.getAttribLocation(program, 'aVertexTexCoord'),
+				vertexPosition: this.gl.getAttribLocation(this.currentProgram, 'aVertexPosition'),
+				vertexNormal: this.gl.getAttribLocation(this.currentProgram, 'aVertexNormal'),
+				vertexColor: this.gl.getAttribLocation(this.currentProgram, 'aVertexColor'),
+				vertexTexCoord: this.gl.getAttribLocation(this.currentProgram, 'aVertexTexCoord'),
 			},
 			uniformLocations: {
-				projectionMatrix: this.gl.getUniformLocation(program, 'uProjectionMatrix'),
-				viewMatrix: this.gl.getUniformLocation(program, 'uViewMatrix'),
-				modelMatrix: this.gl.getUniformLocation(program, 'uModelMatrix'),
-				useNormal: this.gl.getUniformLocation(program, 'uUseNormal'),
-				useColor: this.gl.getUniformLocation(program, 'uUseColor'),
-				useTexture: this.gl.getUniformLocation(program, 'uUseTexture'),
-				sampler: this.gl.getUniformLocation(program, 'uSampler'),
+				projectionMatrix: this.gl.getUniformLocation(this.currentProgram, 'uProjectionMatrix'),
+				viewMatrix: this.gl.getUniformLocation(this.currentProgram, 'uViewMatrix'),
+				modelMatrix: this.gl.getUniformLocation(this.currentProgram, 'uModelMatrix'),
+				useNormal: this.gl.getUniformLocation(this.currentProgram, 'uUseNormal'),
+				useColor: this.gl.getUniformLocation(this.currentProgram, 'uUseColor'),
+				useTexture: this.gl.getUniformLocation(this.currentProgram, 'uUseTexture'),
+				sampler: this.gl.getUniformLocation(this.currentProgram, 'uSampler'),
 			}
 		};
+
 		// Transferă informație între shader-e
 		this.gl.uniformMatrix4fv(this.currentProgramInfo.uniformLocations.projectionMatrix, false, projectionMatrix);
 		this.gl.uniformMatrix4fv(this.currentProgramInfo.uniformLocations.viewMatrix, false, viewMatrix);
@@ -165,7 +183,6 @@ class SpecialDrawableInstance {
 		gl.attachShader(shaderProgram, vertexShader);
 		gl.attachShader(shaderProgram, fragmentShader);
 		gl.linkProgram(shaderProgram);
-		gl.useProgram(shaderProgram);
 		gl.detachShader(shaderProgram, fragmentShader);
 		gl.detachShader(shaderProgram, vertexShader);
 		gl.deleteShader(fragmentShader);
