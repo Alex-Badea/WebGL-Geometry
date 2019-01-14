@@ -43,22 +43,14 @@ function main() {
 	// Structura ierarhiei primitivelor
 	{
 		world.add(p1, p2, p3, p4, p5, p6, p7, p8);
-		/*world.add(t1, t2, t3, t4, t5, t6, t7, t8);
-		{
-			cs1.add(p1, p2, p3, p4, p5, p6, p7, p8);
-			cs1.add(t1, t2, t3, t4, t5, t6, t7, t8);
-		}
-		world.add(cs1);*/
+		world.add(t1, t2, t3, t4, t5, t6, t7, t8);
 	}
 
-	// Post-procesare:
-	const imgInput = document.getElementById("texInput");
-	const fr = new FileReader();
-	fr.onload = e => {
-		world.add(t1);
+	const cplLoader = new PlyModelLoader("plyInput", result => {
+		world.add(new SpecialDrawableBlueprint(result.positions, [], result.colors, result.texInfo, result.faces));
 		scene.redraw();
-	}
-	imgInput.onchange = () => fr.readAsDataURL(imgInput.files[0]);
+		console.log(result)
+	});
 
 	scene.insert(world);
 	scene.render();

@@ -60,6 +60,7 @@ class DrawableInstance {
 	}
 
 	erase() {
-		document.body.removeChild(this.nameContainer);
+		if (this.nameContainer)
+			document.body.removeChild(this.nameContainer);
 	}
 }

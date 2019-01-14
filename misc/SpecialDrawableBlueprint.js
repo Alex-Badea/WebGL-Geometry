@@ -9,7 +9,7 @@ class SpecialDrawableBlueprint {
 			throw Error("Positions length and normals length must coincide");
 		if (colors.length != 0 && (positions.length != colors.length))
 			throw Error("Positions length and colors length must coincide");
-		if (texInfo.source == undefined ^ texInfo.coords.length == 0)
+		if (texInfo.image == undefined ^ texInfo.coords.length == 0)
 			throw Error("Incomplete texInfo");
 		if (texInfo.coords != 0 && (positions.length != texInfo.coords.length))
 			throw Error("Positions length and texCoords length must coincide");

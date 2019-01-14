@@ -9,7 +9,8 @@ class SpecialDrawableInstance {
 			position: gl.createBuffer(),
 			normal: specialDrawable.normals.length != 0 ? gl.createBuffer() : null,
 			color: specialDrawable.colors.length != 0 ? gl.createBuffer() : null,
-			texture: specialDrawable.texInfo.coords.length != 0 ? gl.createBuffer() : null,
+			texture: specialDrawable.texInfo.image != null ? gl.createTexture() : null,
+			texCoord: specialDrawable.texInfo.coords.length != 0 ? gl.createBuffer() : null,
 			index: specialDrawable.faces.length != 0 ? gl.createBuffer() : null
  		};
 	}
@@ -44,14 +45,35 @@ class SpecialDrawableInstance {
 			this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(this.specialDrawable.colors.map(e => Array.from(e).concat(1)).flat()), this.gl.STATIC_DRAW);
 			this.gl.vertexAttribPointer(this.currentProgramInfo.attribLocations.vertexColor, 4, this.gl.FLOAT, false, 0, 0);
 			this.gl.enableVertexAttribArray(this.currentProgramInfo.attribLocations.vertexColor);
+		} else { // UGLYYYYYYYYYYYYYYY
+			this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.gl.createBuffer());
+			this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(this.specialDrawable.positions.map(e => Array.from(e).concat(1)).flat()), this.gl.STATIC_DRAW);
+			this.gl.vertexAttribPointer(this.currentProgramInfo.attribLocations.vertexColor, 4, this.gl.FLOAT, false, 0, 0);
 		}
 
 		if (this.buffers.texture != null) {
-			throw Error("Unimplemented")
+			this.gl.activeTexture(this.gl.TEXTURE0);
+			this.gl.bindTexture(this.gl.TEXTURE_2D, this.buffers.texture);
+			this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, this.specialDrawable.texInfo.image);
+       		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
+       		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
+       		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR);
+       		this.gl.uniform1i(this.currentProgramInfo.uniformLocations.sampler, 0);
+		} else { // Leagă un tampon fictiv fiindcă Sampler2D-ul din fragment shader aruncă avertismente
+			this.gl.bindTexture(this.gl.TEXTURE_2D, this.gl.createTexture());
+			this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, 1, 1, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, new Uint8Array([null,null,null,null]));
+		}
+
+		if (this.buffers.texCoord != null) {
+			this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.texCoord);
+			this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(this.specialDrawable.texInfo.coords.map(e => Array.from(e)).flat()), this.gl.STATIC_DRAW);
+			this.gl.vertexAttribPointer(this.currentProgramInfo.attribLocations.vertexTexCoord, 2, this.gl.FLOAT, false, 0, 0);
+			this.gl.enableVertexAttribArray(this.currentProgramInfo.attribLocations.vertexTexCoord);
 		}
 
 		if (this.buffers.index != null) {
 			this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.buffers.index);
+			if (!this.gl.getExtension("OES_element_index_uint")) throw Error("Uint faces not supported");
 			this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.specialDrawable.faces.map(e => Array.from(e)).flat()), this.gl.STATIC_DRAW);
 			this.gl.drawElements(this.gl.TRIANGLES, this.specialDrawable.faces.length*3, this.gl.UNSIGNED_SHORT, 0);
 		} else {
@@ -80,6 +102,7 @@ class SpecialDrawableInstance {
 				useNormal: this.gl.getUniformLocation(program, 'uUseNormal'),
 				useColor: this.gl.getUniformLocation(program, 'uUseColor'),
 				useTexture: this.gl.getUniformLocation(program, 'uUseTexture'),
+				sampler: this.gl.getUniformLocation(program, 'uSampler'),
 			}
 		};
 		// Transferă informație între shader-e
@@ -96,9 +119,9 @@ class SpecialDrawableInstance {
 		const gl = this.gl;
 		const vsSource = `
 			attribute vec3 aVertexPosition;
-			//attribute vec3 aVertexNormal;
+			attribute vec3 aVertexNormal;
 			attribute vec4 aVertexColor;
-			//attribute vec2 aVertexTexCoord;
+			attribute vec2 aVertexTexCoord;
 
 			uniform bool uUseNormal;
 			uniform bool uUseColor;
@@ -108,23 +131,42 @@ class SpecialDrawableInstance {
 			uniform mat4 uViewMatrix;
 			uniform mat4 uProjectionMatrix;
 		
-			varying lowp vec4 vColor;
+			varying lowp vec4 vVertexColor;
+			varying highp vec2 vVertexTexCoord;
+			varying lowp float vUseNormal;
+			varying lowp float vUseColor;
+			varying lowp float vUseTexture;
 		
 			void main(void) {
-				gl_PointSize = uUseNormal ? 50.0 : 5.0; // 5.0;
+				gl_PointSize = 5.0;
 				gl_Position = 
 					uProjectionMatrix * 
 					uViewMatrix * 
 					uModelMatrix * 
 					vec4(aVertexPosition, 1);
-				vColor = uUseTexture ? vec4(0.0, 1.0, 0.0, 1.0) : aVertexColor; // aVertexColor;
+
+				vVertexColor = aVertexColor;
+				vVertexTexCoord = aVertexTexCoord; 		
+
+				vUseNormal = float(uUseNormal);
+				vUseColor = float(uUseColor);
+				vUseTexture = float(uUseTexture);
 			}
 		`;
 		const fsSource = `
-			varying lowp vec4 vColor;
+			uniform sampler2D uSampler;
+
+			varying lowp vec4 vVertexColor;
+			varying highp vec2 vVertexTexCoord;
+			varying lowp float vUseNormal;
+			varying lowp float vUseColor;
+			varying lowp float vUseTexture;
         
 			void main(void) {
-				gl_FragColor = vColor;
+				lowp vec4 colorPart = vUseColor*vVertexColor;
+				lowp vec4 texPart = vUseTexture*texture2D(uSampler, vVertexTexCoord);
+				gl_FragColor = (colorPart + texPart)/(vUseColor + vUseTexture);
+				if (vUseColor<0.5 && vUseTexture<0.5) gl_FragColor = vec4(0,0,0,1);
 			}
 		`;
 		
@@ -165,4 +207,6 @@ class SpecialDrawableInstance {
 
 		return shader;
 	}
+
+	erase() {} 
 }
