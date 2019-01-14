@@ -1,12 +1,15 @@
 class PlyModelLoader {
 	constructor(...varargs) {
+		let plyInputId;
+		let texInputId;
+		let onLoad;
 		if (arguments.length == 2) {
-			var plyInputId = arguments[0];
-			var onLoad = arguments[1];
+			plyInputId = arguments[0];
+			onLoad = arguments[1];
 		} else {
-			var plyInputId = arguments[0];
-			var texInputId = arguments[1];
-			var onLoad = arguments[2];
+			plyInputId = arguments[0];
+			texInputId = arguments[1];
+			onLoad = arguments[2];
 		}
 
 		const plyInput = document.getElementById(plyInputId);
@@ -38,11 +41,12 @@ class PlyModelLoader {
 			indexTable.push(properties.indexOf("texture_v"));
 
 			const contentLineTokens = content.split("\n");
-
 			const hasNormals = indexTable[3] > 0;
 			const hasColors = indexTable[6] > 0;
 			const hasTexCoords = indexTable[9] > 0;
-			if (hasTexCoords ^ !!texInputId) throw Error("Incomplete texture info"); 
+			if (hasTexCoords ^ !!texInputId) {
+				throw Error("Incomplete texture info"); 
+			}
 			const hasFaces = !isNaN(facesNo);
 
 			let positions = [];
@@ -50,13 +54,13 @@ class PlyModelLoader {
 			let colors = [];
 			let texCoords = [];
 			for (let i = 0; i < verticesNo; i++) {
-				positions.push([parseFloat(contentLineTokens[i].split(/[ ]+/)[indexTable[0]]), parseFloat(contentLineTokens[i].split(/[ ]+/)[indexTable[1]]), parseFloat(contentLineTokens[i].split(/[ ]+/)[indexTable[2]])]);
+				positions.push([parseFloat(contentLineTokens[i].trim().split(/[ ]+/)[indexTable[0]]), parseFloat(contentLineTokens[i].trim().split(/[ ]+/)[indexTable[1]]), parseFloat(contentLineTokens[i].trim().split(/[ ]+/)[indexTable[2]])]);
 				if (hasNormals)
-					normals.push([parseFloat(contentLineTokens[i].split(/[ ]+/)[indexTable[3]]), parseFloat(contentLineTokens[i].split(/[ ]+/)[indexTable[4]]), parseFloat(contentLineTokens[i].split(/[ ]+/)[indexTable[5]])]);
+					normals.push([parseFloat(contentLineTokens[i].trim().split(/[ ]+/)[indexTable[3]]), parseFloat(contentLineTokens[i].trim().split(/[ ]+/)[indexTable[4]]), parseFloat(contentLineTokens[i].trim().split(/[ ]+/)[indexTable[5]])]);
 				if (hasColors)
-					colors.push([parseFloat(contentLineTokens[i].split(/[ ]+/)[indexTable[6]])/255.0, parseFloat(contentLineTokens[i].split(/[ ]+/)[indexTable[7]])/255.0, parseFloat(contentLineTokens[i].split(/[ ]+/)[indexTable[8]])/255.0]);
+					colors.push([parseFloat(contentLineTokens[i].trim().split(/[ ]+/)[indexTable[6]])/255.0, parseFloat(contentLineTokens[i].trim().split(/[ ]+/)[indexTable[7]])/255.0, parseFloat(contentLineTokens[i].trim().split(/[ ]+/)[indexTable[8]])/255.0]);
 				if (hasTexCoords)
-					texCoords.push([parseFloat(contentLineTokens[i].split(/[ ]+/)[indexTable[9]]), parseFloat(contentLineTokens[i].split(/[ ]+/)[indexTable[10]])]);
+					texCoords.push([parseFloat(contentLineTokens[i].trim().split(/[ ]+/)[indexTable[9]]), parseFloat(contentLineTokens[i].trim().split(/[ ]+/)[indexTable[10]])]);
 			}
 			let faces = [];
 			for (let i = 0; i < facesNo; i++) {

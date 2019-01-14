@@ -1,11 +1,12 @@
 class Scene {
-	constructor(gl) {
+	constructor(gl, options) {
 		if (gl == undefined)
 			throw Error("Undefined or null params");
 		const program = this.initShaderProgram(gl);
 
 		this.gl = gl;
 		this.drawList = [];
+		this.unlockRoll = !!options && !!options.unlockRoll;
 		this.programInfo = {
 			program,
 			attribLocations: {
@@ -44,7 +45,8 @@ class Scene {
 				frontDir = vec3.normalize(vec3.create(), vec3.negate(vec3.create(), this.eyePos));
 				leftDir = vec3.normalize(vec3.create(), vec3.cross(vec3.create(), this.upDir, frontDir));
 				// Se va regenera upDir degenerat?
-				//upDir = vec3.normalize(vec3.create(), vec3.cross(vec3.create(), frontDir, leftDir));
+				if (this.unlockRoll) 
+					this.upDir = vec3.normalize(vec3.create(), vec3.cross(vec3.create(), frontDir, leftDir));
 			}
 			lastMousePos = vec2.fromValues(e.clientX, e.clientY);
 		};
