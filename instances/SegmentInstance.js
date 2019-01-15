@@ -15,7 +15,7 @@ class SegmentInstance extends DrawableInstance {
 		this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array([...this.drawable.color, 1, ...this.drawable.color, 1]), this.gl.STATIC_DRAW);
 		this.gl.vertexAttribPointer(this.programInfo.attribLocations.vertexColor, 4, this.gl.FLOAT, false, 0, 0);
 		this.gl.enableVertexAttribArray(this.programInfo.attribLocations.vertexColor);
-		
+
 		this.gl.drawArrays(this.gl.LINES, 0, 2);	
 	}
 	

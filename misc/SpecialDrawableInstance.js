@@ -36,7 +36,9 @@ class SpecialDrawableInstance {
 	
 		if (this.drawable.faces.length != 0) {
 			this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.buffers.index);
-			this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.drawable.faces.map(e => Array.from(e)).flat()), this.gl.STATIC_DRAW);
+			if (!this.gl.getExtension("OES_element_index_uint"))
+				throw Error("Uint faces not supported");
+			this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Uint32Array(this.drawable.faces.map(e => Array.from(e)).flat()), this.gl.STATIC_DRAW);
 		}
 
 		// Compilarea shader-elor
@@ -80,7 +82,7 @@ class SpecialDrawableInstance {
 
 		if (this.buffers.index.length != 0) {
 			this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.buffers.index);
-			this.gl.drawElements(this.gl.TRIANGLES, this.drawable.faces.length*3, this.gl.UNSIGNED_SHORT, 0);
+			this.gl.drawElements(this.gl.TRIANGLES, this.drawable.faces.length*3, this.gl.UNSIGNED_INT, 0);
 		} else {
 			this.gl.drawArrays(this.gl.POINTS, 0, this.drawable.positions.length);
 		}

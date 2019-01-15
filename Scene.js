@@ -95,6 +95,7 @@ class Scene {
 		this.gl.blendEquation(this.gl.FUNC_ADD);		
 		this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
 		this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+		this.gl.lineWidth(12);
 		
 		// Per Scene:
 		const projectionMatrix = mat4.perspective(mat4.create(), glMatrix.toRadian(this.fov), this.aspect, this.zNear, this.zFar);
@@ -132,7 +133,7 @@ class Scene {
 			varying lowp vec4 vColor;
 		
 			void main(void) {
-				gl_PointSize = 5.0;
+				gl_PointSize = 15.0;
 				gl_Position = 
 					uProjectionMatrix * 
 					uViewMatrix * 

@@ -9,9 +9,9 @@ property float texture_v
 element face 2
 property list uchar int vertex_indices
 end_header
--1  1 1 0 1
- 1  1 1 1 1
- 1 -1 1 1 0 
--1 -1 1 0 0 
-3 0 1 2 
-3 0 2 3 
+-1.3  1 1 0 1
+ 1.3  1 1 1 1
+ 1.3 -1 1 1 0 
+-1.3 -1 1 0 0 
+3 0 1 3 
+3 1 2 3 

@@ -31,7 +31,7 @@ class DrawableInstance {
 		if (this.drawable.name !== "" && this.drawable.name !== "NO_NAME") {
 			this.nameContainer = document.createElement("div");
 			this.nameContainer.innerHTML = this.drawable.name;
-			this.nameContainer.setAttribute("style", "position: absolute;-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;font-size: 12px;pointer-events: none");
+			this.nameContainer.setAttribute("style", "position: absolute;-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;font-size: 16px;pointer-events: none;text-shadow: -1px -1px 1px white, -1px 1px 1px white, 1px 1px 1px white, 1px -1px 1px white;");
 			document.body.appendChild(this.nameContainer);
 		}
 	}
@@ -47,8 +47,9 @@ class DrawableInstance {
 			const mvp = mat4.multiply(mat4.create(), mat4.multiply(mat4.create(), projectionMatrix, viewMatrix), modelMatrix);
 			const nameMvpPos = vec4.transformMat4(vec4.create(), namePos, mvp);
 			const nameNormScrPos = [nameMvpPos[0]/nameMvpPos[3], nameMvpPos[1]/nameMvpPos[3]];
-			const nameScrPos = [(nameNormScrPos[0]*0.5+0.5)*this.gl.canvas.width,
-								(nameNormScrPos[1]*-0.5+0.5)*this.gl.canvas.height];
+			const nameScrPos = [(nameNormScrPos[0]*0.5+0.5)*this.gl.canvas.width-this.gl.canvas.getBoundingClientRect().left,
+								(nameNormScrPos[1]*-0.5+0.5)*this.gl.canvas.height-this.gl.canvas.getBoundingClientRect().top];
+
 			const bound = this.gl.canvas.getBoundingClientRect();
 			if (nameScrPos[0] > 0 && nameScrPos[0] < this.gl.canvas.width && nameScrPos[1] > 0 && nameScrPos[1] < this.gl.canvas.height && nameMvpPos[2] > 0) {
 				this.nameContainer.style.left = nameScrPos[0] + bound.x;

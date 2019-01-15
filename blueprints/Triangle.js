@@ -42,7 +42,7 @@ class Triangle extends DrawableBlueprint {
 		const num = vec3.dot(n, vec3.sub(vec3.create(), V0, P0));
 		const den = vec3.dot(n, vec3.sub(vec3.create(), P1, P0));
 		if (den === 0)
-			return null;
+			throw Error("Parallel");
 		const ri = num/den;
 		return vec3.add(vec3.create(), P0, 
 						vec3.scale(vec3.create(), vec3.sub(vec3.create(), P1, P0), ri));
