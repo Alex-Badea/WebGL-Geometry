@@ -194,7 +194,7 @@ class Triangle extends DrawableBlueprint {
 
 function compute_intervals_isectline(VERT0, VERT1, VERT2, VV0, VV1, VV2, D0, D1, D2, D0D1, D0D2, /*out*/isect, /*out*/isectpoint0, /*out*/isectpoint1) {
 	if (D0D1 > -0.0001) isect2(VERT2,VERT0,VERT1,VV2,VV0,VV1,D2,D0,D1,isect,isectpoint0,isectpoint1);
-	else if (D0D2 > -0,0001) isect2(VERT1,VERT0,VERT2,VV1,VV0,VV2,D1,D0,D2,isect,isectpoint0,isectpoint1);
+	else if (D0D2 > -0.0001) isect2(VERT1,VERT0,VERT2,VV1,VV0,VV2,D1,D0,D2,isect,isectpoint0,isectpoint1);
 	else if (D1*D2 > -0.0001 || Math.abs(D0) < 0.0001) isect2(VERT0,VERT1,VERT2,VV0,VV1,VV2,D0,D1,D2,isect,isectpoint0,isectpoint1);
 	else if (Math.abs(D1) < 0.0001) isect2(VERT1,VERT0,VERT2,VV1,VV0,VV2,D1,D0,D2,isect,isectpoint0,isectpoint1); 
 	else if (Math.abs(D2) < 0.0001) isect2(VERT2,VERT0,VERT1,VV2,VV0,VV1,D2,D0,D1,isect,isectpoint0,isectpoint1);
@@ -202,17 +202,16 @@ function compute_intervals_isectline(VERT0, VERT1, VERT2, VV0, VV1, VV2, D0, D1,
 	return 0;
 }
 
-function isect2(VTX0, VTX1, VTX2, VV0, VV1, VV2, D0, D1, D2, isect, isectpoint0, isectpoint1) {
-	let diff = vec3.create();
+function isect2(VTX0, VTX1, VTX2, VV0, VV1, VV2, D0, D1, D2, /*out*/isect, /*out*/isectpoint0, /*out*/isectpoint1) {
 	let tmp = D0/(D0-D1);
+	let diff = vec3.create();
 	isect[0] = VV0+(VV1-VV0)*tmp;
 	vec3.sub(diff, VTX1, VTX0);
 	vec3.scale(diff, diff, tmp);
 	vec3.add(isectpoint0, diff, VTX0);
-	
 	tmp = D0/(D0-D2);
 	isect[1] = VV0+(VV2-VV0)*tmp;
 	vec3.sub(diff, VTX2, VTX0);
-	vec3.scale(diff, diff, VTX0);
+	vec3.scale(diff, diff, tmp);
 	vec3.add(isectpoint1, VTX0, diff);
 }

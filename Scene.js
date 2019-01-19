@@ -133,7 +133,7 @@ class Scene {
 			varying lowp vec4 vColor;
 		
 			void main(void) {
-				gl_PointSize = 15.0;
+				gl_PointSize = 8.0;
 				gl_Position = 
 					uProjectionMatrix * 
 					uViewMatrix * 
