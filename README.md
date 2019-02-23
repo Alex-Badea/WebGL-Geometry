@@ -1,4 +1,4 @@
-# WebGL-Geometry
+# WebGL Geometry
 A WebGL library for drawing and graphing primitives in flexible contexts.
 ![A canonic "cube" across two different contexts](https://image.ibb.co/c9ABey/Scene_20.png)
 ![Point attributes being modified at runtime](https://image.ibb.co/fZ9Ejy/2018_07_06_2.png)
