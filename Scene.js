@@ -35,14 +35,14 @@ class Scene {
 			if (this.inputState.mouseDown) {
 				const deltaX = e.clientX - lastMousePos[0];
 				const deltaY = e.clientY - lastMousePos[1];
-				let frontDir = vec3.normalize(vec3.create(), vec3.negate(vec3.create(), this.eyePos));
+				let frontDir = vec3.normalize(vec3.create(), vec3.sub(vec3.create(), this.lookPos, this.eyePos));
 				let leftDir = vec3.normalize(vec3.create(), vec3.cross(vec3.create(), this.upDir, frontDir));
 				
 				const rotLeftMat = mat4.fromRotation(mat4.create(), -deltaX*0.01, this.upDir);
 				const rotUpMat = mat4.fromRotation(mat4.create(), deltaY*0.01, leftDir);
-				this.eyePos = vec3.transformMat4(vec3.create(), this.eyePos, rotLeftMat);
-				this.eyePos = vec3.transformMat4(vec3.create(), this.eyePos, rotUpMat);
-				frontDir = vec3.normalize(vec3.create(), vec3.negate(vec3.create(), this.eyePos));
+				frontDir = vec3.transformMat4(vec3.create(), frontDir, rotLeftMat);
+				frontDir = vec3.transformMat4(vec3.create(), frontDir, rotUpMat);
+				this.lookPos = vec3.add(vec3.create(), this.eyePos, frontDir);
 				leftDir = vec3.normalize(vec3.create(), vec3.cross(vec3.create(), this.upDir, frontDir));
 				// Se va regenera upDir degenerat?
 				if (this.unlockRoll) 
@@ -52,11 +52,35 @@ class Scene {
 		};
 		gl.canvas.onwheel = e => {
 			e.preventDefault();
-			let frontDir = vec3.normalize(vec3.create(), vec3.negate(vec3.create(), this.eyePos));
+			const frontDir = vec3.normalize(vec3.create(), vec3.sub(vec3.create(), this.lookPos, this.eyePos));
 			this.eyePos = vec3.add(vec3.create(), this.eyePos, vec3.scale(vec3.create(), frontDir, -e.deltaY*0.001));
+			this.lookPos = vec3.add(vec3.create(), this.eyePos, frontDir);
 		};
 		document.onkeypress = e => {
+			const SPEED_FACTOR = 0.1;
+			const frontDir = vec3.normalize(vec3.create(), vec3.sub(vec3.create(), this.lookPos, this.eyePos));
+			const leftDir = vec3.normalize(vec3.create(), vec3.cross(vec3.create(), this.upDir, frontDir));
 			switch (e.key) {
+			case 'w':
+				this.eyePos = vec3.add(vec3.create(), this.eyePos, vec3.scale(vec3.create(), frontDir, SPEED_FACTOR));
+				this.lookPos = vec3.add(vec3.create(), this.eyePos, frontDir);
+				break;
+
+			case 's':
+				this.eyePos = vec3.sub(vec3.create(), this.eyePos, vec3.scale(vec3.create(), frontDir, SPEED_FACTOR));
+				this.lookPos = vec3.add(vec3.create(), this.eyePos, frontDir);
+				break;
+
+			case 'a':
+				this.eyePos = vec3.add(vec3.create(), this.eyePos, vec3.scale(vec3.create(), leftDir, SPEED_FACTOR));
+				this.lookPos = vec3.add(vec3.create(), this.eyePos, frontDir);
+				break;
+
+			case 'd':
+				this.eyePos = vec3.sub(vec3.create(), this.eyePos, vec3.scale(vec3.create(), leftDir, SPEED_FACTOR));
+				this.lookPos = vec3.add(vec3.create(), this.eyePos, frontDir);
+				break;
+
 			case 'p':
 				const rect = this.gl.canvas.getBoundingClientRect();
 				html2canvas(document.body, {x:rect.x, y:rect.y, height:rect.height, width:rect.width}).then(canvas => {

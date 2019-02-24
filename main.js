@@ -26,6 +26,7 @@ function main() {
 	const im1Loader = new PlyModelLoader("rect1PlyInput", "im1TexInput", result => {
 		P1.add(new SpecialDrawableBlueprint(result.positions, [], result.colors, result.texInfo, result.faces));
 		const R1 = new Vector("Rază", Colors.CYN, new Point("", Colors.BLK, vec3.fromValues(6*-0.06, 6*-0.72, 6)));
+
 		P1.add(R1);
 		// Triunghi fictiv pentru intersecții
 		const newT1 = vec4.transformMat4(vec4.create(), vec4.fromValues(...result.positions[1], 1),
@@ -35,7 +36,7 @@ function main() {
 		const newT3 = vec4.transformMat4(vec4.create(), vec4.fromValues(...result.positions[3], 1),
 														P1.modelMatrix).slice(0, 2+1);
 		const canonicalT = new Triangle("@@@", Colors.GRN, new Point("",Colors.BLK,newT1), new Point("",Colors.BLK,newT2), new Point("",Colors.BLK,newT3));
-		scene.insert(canonicalT.intersect(B, "e", Colors.YLW));
+		//scene.insert(canonicalT.intersect(B, "e", Colors.YLW));
 		const T = new Triangle("@@@#", Colors.GRN, new Point("",Colors.BLK,result.positions[1]), new Point("",Colors.BLK,result.positions[2]), new Point("",Colors.BLK,result.positions[3]))
 		P1.add(T.intersect(R1, "x", Colors.D_RED));
 
@@ -53,11 +54,11 @@ function main() {
 		const newT3 = vec4.transformMat4(vec4.create(), vec4.fromValues(...result.positions[3], 1),
 														P2.modelMatrix).slice(0, 2+1);
 		const canonicalT = new Triangle("@@@", Colors.GRN, new Point("",Colors.BLK,newT1), new Point("",Colors.BLK,newT2), new Point("",Colors.BLK,newT3));
-		scene.insert(canonicalT.intersect(B, "e'", Colors.CYN));
+		//scene.insert(canonicalT.intersect(B, "e'", Colors.CYN));
 		const I = canonicalT.intersect(EP, "l'", Colors.GRN);
 		I.p1.position[2] -= 0.01;
 		I.p2.position[2] -= 0.01;
-		scene.insert(I)
+		//scene.insert(I)
 		const T = new Triangle("@@@#", Colors.GRN, new Point("",Colors.BLK,result.positions[0]), new Point("",Colors.BLK,result.positions[2]), new Point("",Colors.BLK,result.positions[3]))
 		P2.add(T.intersect(R2, "x'", Colors.D_BLU));
 
@@ -65,6 +66,6 @@ function main() {
 	});
 
 	scene.insert(P1, P2, X, B, Mesh);
-	scene.insert(EP);
+	//scene.insert(EP);
 	scene.render();
 }

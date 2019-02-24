@@ -31,8 +31,9 @@ class DrawableInstance {
 		if (this.drawable.name !== "" && this.drawable.name !== "NO_NAME") {
 			this.nameContainer = document.createElement("div");
 			this.nameContainer.innerHTML = this.drawable.name;
-			this.nameContainer.setAttribute("style", "position: absolute;-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;font-size: 16px;pointer-events: none;text-shadow: -1px -1px 1px white, -1px 1px 1px white, 1px 1px 1px white, 1px -1px 1px white;");
+			this.nameContainer.setAttribute("style", "position: absolute;-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;font-size: 16px;pointer-events: none;text-shadow: -2px -2px 2px #ffcc66, -2px 2px 2px #ffcc66, 2px 2px 2px #ffcc66, 2px -2px 2px #ffcc66, -1px -1px 1px white, -1px 1px 1px white, 1px 1px 1px white, 1px -1px 1px white;color:#000000");
 			document.body.appendChild(this.nameContainer);
+			MathJax.Hub.Queue(["Typeset",MathJax.Hub,"el2"]); 
 		}
 	}
 	

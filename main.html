@@ -1,6 +1,14 @@
 <head>
 <meta charset="UTF-8">
 </head>
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$']], processEscapes: true
+  }
+});
+</script>
 <script src="DrawableBlueprint.js"></script>
 <script src="blueprints/Point.js"></script>
 <script src="blueprints/Segment.js"></script>
@@ -22,7 +30,7 @@
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 <script src="Scene.js"></script>
 <script src="main.js"></script>
-<canvas id="glCanvas" width="1024" height="768" height="auto"></canvas>
+<canvas id="glCanvas" width="960" height="640" height="auto"></canvas>
 <br>
 mesh:
 <input id="meshPlyInput" type="file"/>
