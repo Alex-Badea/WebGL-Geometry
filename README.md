@@ -27,7 +27,23 @@ This library was originally meant as an auxiliary to an educational project for 
     
 ### Examples
 
-There are also example scenes in the code, inside the _ex\_\*_ folders. The following are screenshots of them: 
+There are also example scenes in the code, inside the _ex\_\*_ folders from which you can copy the _main.html_ and _main.js_ files into the main folder and open the html file in your browser for visualisation. The following are screenshots of the scenes: 
+
+#### ex_spdc
+Example of single primitive, multiple contexts: the cube-like model is drawn twice, once in the canonical coordinate system and once in a coordinate system with an arbitrary rotation, scaling and translation;
+<a href="https://ibb.co/QX4x4Hd"><img src="https://i.ibb.co/JC9S9pQ/Scene-3.png" alt="Scene-3" border="0"></a>
+
+#### ex_dynmodif
+Example of runtime-modified attributes: input sliders have been used to vary the position of points S1 to S12;
+<a href="https://ibb.co/HXG2gSw"><img src="https://i.ibb.co/ZNcJTj4/Scene.png" alt="Scene" border="0"></a>
+
+#### ex_isect
+Example of triangle-segment and triangle-triangle intersection;
+<a href="https://ibb.co/crZfzNz"><img src="https://i.ibb.co/4VXvBjB/Scene-2.png" alt="Scene-2" border="0"></a>
+
+#### ex_epipolar
+A scene that loads .ply models and uses the features mentioned previously to render a more complex view.
+<a href="https://ibb.co/b5TsB7y"><img src="https://i.ibb.co/Zz5B8Nw/Scene-1.png" alt="Scene-1" border="0"></a>
     
 ```diff
 + Can draw names of drawables
