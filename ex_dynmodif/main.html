@@ -1,0 +1,46 @@
+<head>
+	<meta charset="UTF-8">
+	<script type="text/javascript" async
+  	src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+  	MathJax.Hub.Config({tex2jax: { inlineMath: [['$','$']], processEscapes: true }});
+	</script>
+	<script src="DrawableBlueprint.js"></script>
+	<script src="blueprints/Point.js"></script>
+	<script src="blueprints/Segment.js"></script>
+	<script src="blueprints/Arrow.js"></script>
+	<script src="blueprints/Vector.js"></script>
+	<script src="blueprints/Triangle.js"></script>
+	<script src="blueprints/CoordSystem.js"></script>
+	<script src="gl-matrix.js"></script>
+	<script src="DrawableInstance.js"></script>
+	<script src="instances/PointInstance.js"></script>
+	<script src="instances/SegmentInstance.js"></script>
+	<script src="instances/ArrowInstance.js"></script>
+	<script src="instances/VectorInstance.js"></script>
+	<script src="instances/TriangleInstance.js"></script>
+	<script src="instances/CoordSystemInstance.js"></script>
+	<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+	<script src="Scene.js"></script>
+	<script src="main.js"></script>
+</head>
+<body>
+	<canvas id="glCanvas" width="960" height="640" height="auto"></canvas>
+	<div>
+		<div>P1 x:
+		<input id="slider1" type="range" min="0" max="1" step="0.01" value="0.5">
+		P2 y:
+		<input id="slider2" type="range" min="0" max="1" step="0.01" value="0.5">
+		P3 z:
+		<input id="slider3" type="range" min="0" max="1" step="0.01" value="0.5">
+		P4 x:
+		<input id="slider4" type="range" min="0" max="1" step="0.01" value="0.5"></div>
+		<div>P5 y:
+		<input id="slider5" type="range" min="0" max="1" step="0.01" value="0.5">
+		P6 z:
+		<input id="slider6" type="range" min="0" max="1" step="0.01" value="0.5">
+		P7 x:
+		<input id="slider7" type="range" min="0" max="1" step="0.01" value="0.5">
+		P8 y:
+		<input id="slider8" type="range" min="0" max="1" step="0.01" value="0.5"></div>
+	</div>
+</body>

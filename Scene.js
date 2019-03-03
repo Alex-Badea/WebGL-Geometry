@@ -7,6 +7,7 @@ class Scene {
 		this.gl = gl;
 		this.drawList = [];
 		this.unlockRoll = !!options && !!options.unlockRoll;
+		this.depthTest = !!options && !!options.depthTest;
 		this.programInfo = {
 			program,
 			attribLocations: {
@@ -114,7 +115,7 @@ class Scene {
 	renderFrame() {
 		this.gl.clearColor(0.5, 0.5, 0.5, 1.0);  
 		this.gl.clearDepth(1.0); 
-		this.gl.enable(this.gl.DEPTH_TEST);
+		if (this.depthTest) this.gl.enable(this.gl.DEPTH_TEST);
 		this.gl.enable(this.gl.BLEND);
 		this.gl.blendEquation(this.gl.FUNC_ADD);		
 		this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
