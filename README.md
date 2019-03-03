@@ -25,6 +25,10 @@ This library was originally meant as an auxiliary to an educational project for 
     - render();
     - redraw(): deletes all primitives currently in scene, reinstantiates and redraws them (useful for async operations).
     
+### Examples
+
+There are also example scenes in the code, inside the _ex\_\*_ folders. The following are screenshots of them: 
+    
 ```diff
 + Can draw names of drawables
 + Supports shared drawable across multiple contexts
