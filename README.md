@@ -12,7 +12,7 @@ This library was originally meant as an auxiliary to an educational project for 
     - intersect(drawable[**DrawableBlueprint**], name*[**string**]: (optional) name of resulting drawable, color*[**vec3**]: (optional) color of resulting drawable).    
 - **Arrow**[extends **Segment**]: a segment-like primitive but with an arrowhead on the tail;
 - **Vector**[extends **Arrow**]: an arrow-like primitive but with the head always at origin;
-    - constructor(name[**string**], color[**vec3**], p[**Point**]: tail of arrow);
+    - constructor(name[**string**], color[**vec3**], p[**Point**]: tail of arrow).
 - **Triangle**[extends **DrawableBlueprint**];
     - constructor(name[**string**], color[**vec3**], p1[**Point**], p2[**Point**], p3[**Point**]);
     - intersect(drawable[**DrawableBlueprint**], name*[**string**], color*[**vec3**]).   
