@@ -22,7 +22,7 @@ This library was originally meant as an auxiliary to an educational project for 
 - **SpecialDrawableBlueprint**: a drawable type that allows loading more complex models in the scene, with known vertex positions, colors, normals, texture information and faces;
     -constructor(positions[**Float32Array**], normals[**Float32Array**], colors[**Float32Array**], texInfo[**_object literal_**]{image[**Image**], coords[**Float32Array**]}, faces[**Uint32Array**]).
 - **PlyModelLoader**: loads .ply model async;
-    - constructor(plyInputId[**string**]: ID of input element where user loads the .ply mode, texInputId*[**string**]: (optional) ID of input element where user loads the texture image, onLoad[**Function**]: what is executed after the model loads).
+    - constructor(plyInputId[**string**]: ID of input element where user loads the .ply file, texInputId*[**string**]: (optional) ID of input element where user loads the texture image, onLoad[**Function**]: what is executed after the model loads).
 - **Scene**.
     - constructor(gl[**WebGLRenderingContext**]: the WebGL drawing context fetched from the _canvas_ element, options[**_object literal_**]{unlockRoll[**Boolean**]: is scene free to rotate around roll axis, depthTest[**Boolean**]});
     - insert(...[**DrawableBlueprint _varargs_**]);
