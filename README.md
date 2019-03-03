@@ -5,6 +5,7 @@ This library was originally meant as an auxiliary to an educational project for 
 
 1. **DrawableBlueprint**: an abstract standalone primitive, not enclosed within a context, containing basic drawing information;
    1. constructor(name[**string**]: name under which the primitive will be displayed, color[**vec3**]).
+   
 2. **Point**[extends **DrawableBlueprint**];
     1. constructor(name[**string**], color[**vec3**], position[**vec3**]).
     
