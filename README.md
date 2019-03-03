@@ -17,7 +17,7 @@ This library was originally meant as an auxiliary to an educational project for 
     - constructor(name[**string**], color[**vec3**], p1[**Point**], p2[**Point**], p3[**Point**]);
     - intersect(drawable[**DrawableBlueprint**], name*[**string**], color*[**vec3**]).   
 - **CoordSystem**[extends **DrawableBlueprint**]: a container of primitives in which you can add other drawables (including other **CoordSystem**s);
-    - constructor(name[**string**], color[**_array_**]{[**vec3**], [**vec3**], [**vec3**]}: colors of axes, modelMatrix[**mat4**]: homogenous transformation applied to each drawables inside this system, in transpose form);
+    - constructor(name[**string**], color[**_array_**]{[**vec3**], [**vec3**], [**vec3**]}: colors of axes, modelMatrix[**mat4**]: homogenous transformation applied to each drawables inside this system in transpose form);
     - add(...[**DrawableBlueprint _varargs_**]).   
 - **Scene**.
     - constructor(gl[**WebGLRenderingContext**]: the WebGL drawing context fetched from the _canvas_ element, options[**_object literal_**]{unlockRoll[**Boolean**]: is scene free to rotate around roll axis, depthTest[**Boolean**]});
