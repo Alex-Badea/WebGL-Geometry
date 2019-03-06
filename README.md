@@ -20,7 +20,7 @@ This library was originally meant as an auxiliary to an educational project for 
     - constructor(name[**string**], color[**_array_**]{[**vec3**], [**vec3**], [**vec3**]}: colors of axes, modelMatrix[**mat4**]: homogenous transformation applied to each drawables inside this system in transpose form);
     - add(...[**DrawableBlueprint _varargs_**]).
 - **SpecialDrawableBlueprint**: a drawable type that allows loading more complex models in the scene, with known vertex positions, colors, normals, texture information and faces;
-    -constructor(positions[**Float32Array**], normals[**Float32Array**], colors[**Float32Array**], texInfo[**_object literal_**]{image[**Image**], coords[**Float32Array**]}, faces[**Uint32Array**]).
+    - constructor(positions[**Float32Array**], normals[**Float32Array**], colors[**Float32Array**], texInfo[**_object literal_**]{image[**Image**], coords[**Float32Array**]}, faces[**Uint32Array**]).
 - **PlyModelLoader**: loads .ply model async;
     - constructor(plyInputId[**string**]: ID of input element where user loads the .ply file, texInputId*[**string**]: (optional) ID of input element where user loads the texture image, onLoad[**Function**]: what is executed after the model loads).
 - **Scene**.
